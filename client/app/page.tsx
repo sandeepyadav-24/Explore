@@ -17,6 +17,16 @@ interface FormDataType {
   tripStyle?: string;
 }
 
+interface Itinerary {
+  destination: string;
+  duration: number;
+  budget: number;
+  travelers: number;
+  accommodation?: string;
+  food_recommendations?: string[];
+  activities?: string[];
+}
+
 const FlightSearch: React.FC = () => {
   const [formData, setFormData] = useState<FormDataType>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,8 +47,6 @@ const FlightSearch: React.FC = () => {
 
   const clickHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    const token = localStorage.getItem("token");
 
     try {
       setIsLoading(true);
@@ -55,6 +63,9 @@ const FlightSearch: React.FC = () => {
       const result = await response.json();
       console.log("Result--------->>" + JSON.stringify(result, null, 2));
       if (result.success) {
+        //useItineraryStore
+        // .getState()
+        // .setItinerary(result.responseJson as Itinerary);
         setItinerary(result.responseJson as any); // Ensure TypeScript knows the expected type
         console.log(useItineraryStore.getState().itinerary);
         router.push("/itinerary", { scroll: false });
@@ -200,7 +211,7 @@ const FlightSearch: React.FC = () => {
           <div className="p-6 bg-gray-800 rounded-lg shadow-lg">
             <h3 className="font-bold text-lg">Customer Support</h3>
             <p className="text-gray-300">
-              24/7 assistance for all your travel needs.
+              {`24/7 assistance for all your travel needs.`}
             </p>
           </div>
         </div>
