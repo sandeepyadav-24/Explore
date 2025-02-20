@@ -6,7 +6,7 @@ import useItineraryStore from "./store/useItineraryStore";
 import Feature from "./components/Feature";
 import Testimonial from "./components/Testimonial";
 import Hero from "./components/Hero";
-import { ItineraryDay, Itinerary } from "./types"; // Adjust path accordingly
+import { Itinerary } from "./types"; // Adjust path accordingly
 
 interface FormDataType {
   from?: string;
