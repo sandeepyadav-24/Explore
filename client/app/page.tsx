@@ -6,6 +6,7 @@ import useItineraryStore from "./store/useItineraryStore";
 import Feature from "./components/Feature";
 import Testimonial from "./components/Testimonial";
 import Hero from "./components/Hero";
+import { ToastContainer, toast } from "react-toastify";
 import { Itinerary } from "./types"; // Adjust path accordingly
 
 interface FormDataType {
@@ -43,6 +44,13 @@ const FlightSearch: React.FC = () => {
 
   const clickHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (session.status !== "authenticated") {
+      toast("Please log in to search for travel plans.");
+
+      router.push("/api/auth/signin"); // Redirect to login page
+      return;
+    }
+
     console.log(formData);
 
     try {
@@ -120,6 +128,7 @@ const FlightSearch: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-900 to-black text-white p-8 flex flex-col items-center">
       {/* Hero Section */}
       <Hero />
+      <ToastContainer />
 
       {/* Search Form */}
       <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-4xl mt-10">
