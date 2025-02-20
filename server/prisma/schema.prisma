@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Trip {
+  id                 String   @id @default(cuid()) // Unique trip ID
+  userId             String   // Foreign key (User ID)
+  destination        String
+  duration          Int
+  budget            Float
+  travelers         Int
+  itinerary         Json
+  accommodation     Json?
+  food_recommendations Json?
+  createdAt         DateTime @default(now()) // Auto timestamp
+}
+
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+} 
