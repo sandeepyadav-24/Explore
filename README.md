@@ -125,18 +125,15 @@ This will start the application on http://localhost:5173.
 <img width="1437" alt="Screenshot 2025-02-20 at 7 02 48 PM" src="https://github.com/user-attachments/assets/5fb9fa88-472d-4450-b2a5-167a17c27581" />
 
 **DashBoard** 
-<img width="1435" alt="Screenshot 2025-01-04 at 4 55 08 PM" src="https://github.com/user-attachments/assets/1c86a996-35bb-47d0-b0c7-8c715abde1c7" />
+<img width="1439" alt="Screenshot 2025-02-20 at 7 07 35 PM" src="https://github.com/user-attachments/assets/002ce01f-4358-4a8c-821d-85a45e1342bb" />
 
 
-**Add New Project**
-<img width="1440" alt="Screenshot 2025-01-04 at 4 54 44 PM" src="https://github.com/user-attachments/assets/174f6f47-0a8f-4715-9b5e-c5e2aebf0d57" />
+**Trip generated**
+<img width="1437" alt="Screenshot 2025-02-20 at 7 09 00 PM" src="https://github.com/user-attachments/assets/ba4c7e2b-eac8-4d74-b768-ca52d8ab5db9" />
 
-**Add New Task**
-<img width="1437" alt="Screenshot 2025-01-04 at 4 55 21 PM" src="https://github.com/user-attachments/assets/03e2ee1b-289c-47e7-a642-ef6dd9c10aa9" />
+**Sidebar**
+<img width="312" alt="Screenshot 2025-02-20 at 7 09 21 PM" src="https://github.com/user-attachments/assets/b8cfd3cb-b944-4da3-8953-92582cf1cc24" />
 
-
-**Task**
-<img width="1433" alt="Screenshot 2025-01-04 at 4 55 39 PM" src="https://github.com/user-attachments/assets/96fde4a2-8509-4bfe-9ebd-32e6150dc6ed" />
 
 
 
