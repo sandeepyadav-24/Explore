@@ -1,26 +1,5 @@
 import { create } from "zustand";
-
-interface ItineraryDay {
-  morning: {
-    activity: string;
-    best_time: string;
-  };
-  afternoon: {
-    attraction: string;
-    budget_info: string;
-  };
-  evening: {
-    restaurant: string;
-    nightlife: string;
-  };
-  transport: {
-    mode: string;
-    estimated_fare: string;
-  };
-  estimated_budget_breakdown: {
-    total: number;
-  };
-}
+import { ItineraryDay } from "../types"; // Adjust path accordingly
 
 interface Accommodation {
   recommended_hotels: {
@@ -52,7 +31,7 @@ interface Itinerary {
   depart: string;
   return: string;
   class: string;
-  travelers: number;
+  travelers: string;
   tripStyle: string;
   itinerary: Record<string, ItineraryDay>; // Dynamic days (e.g., "Day_1", "Day_2")
   accommodation: Accommodation;

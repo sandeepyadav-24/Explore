@@ -1,5 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
 // Add these type declarations
 declare module "next-auth" {
@@ -33,10 +35,10 @@ const handler = NextAuth({
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (session.user) {
-        session.user.id = token.userId as any;
-        session.user.token = token.accessToken as any;
+        session.user.id = token.userId as string;
+        session.user.token = token.accessToken as string;
 
         // Set cookie using Response API
         const response = new Response();

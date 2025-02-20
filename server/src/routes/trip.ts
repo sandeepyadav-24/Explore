@@ -54,6 +54,7 @@ tripRouter.post("/generate", authMiddleware, async (c) => {
   //const prisma = new PrismaClient().$extends(withAccelerate());
   try {
     const body = await c.req.json();
+    console.log(body);
     // Zod Validation
     const validatedData = tripSchema.parse(body);
 

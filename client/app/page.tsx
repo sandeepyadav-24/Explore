@@ -1,9 +1,12 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import useItineraryStore from "./store/useItineraryStore";
+import Feature from "./components/Feature";
+import Testimonial from "./components/Testimonial";
+import Hero from "./components/Hero";
+import { ItineraryDay, Itinerary } from "./types"; // Adjust path accordingly
 
 interface FormDataType {
   from?: string;
@@ -15,16 +18,6 @@ interface FormDataType {
   nearby?: boolean;
   travelers?: string;
   tripStyle?: string;
-}
-
-interface Itinerary {
-  destination: string;
-  duration: number;
-  budget: number;
-  travelers: number;
-  accommodation?: string;
-  food_recommendations?: string[];
-  activities?: string[];
 }
 
 const FlightSearch: React.FC = () => {
@@ -41,12 +34,16 @@ const FlightSearch: React.FC = () => {
     }),
   };
 
-  const handleInput = (name: keyof FormDataType, value: string | boolean) => {
+  const handleInput = (
+    name: keyof FormDataType,
+    value: string | boolean | number
+  ) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const clickHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    console.log(formData);
 
     try {
       setIsLoading(true);
@@ -60,18 +57,54 @@ const FlightSearch: React.FC = () => {
         }
       );
 
-      const result = await response.json();
-      console.log("Result--------->>" + JSON.stringify(result, null, 2));
-      if (result.success) {
-        //useItineraryStore
-        // .getState()
-        // .setItinerary(result.responseJson as Itinerary);
-        setItinerary(result.responseJson as any); // Ensure TypeScript knows the expected type
+      //const result = await response.json();
+      const result: {
+        success: boolean;
+        responseJson?: Itinerary;
+        error?: string;
+      } = await response.json();
+
+      if (result.success && result.responseJson) {
+        // Transform the itinerary property to match the ItineraryDay structure
+        // Transform itinerary to ensure it matches the ItineraryDay structure
+        const transformedItinerary: Itinerary = {
+          ...result.responseJson,
+          itinerary: Object.fromEntries(
+            Object.entries(result.responseJson.itinerary).map(
+              ([day, details]) => [
+                day,
+                {
+                  morning: details.morning ?? {
+                    activity: "No activity planned",
+                    best_time: "N/A",
+                  },
+                  afternoon: details.afternoon ?? {
+                    attraction: "No attraction planned",
+                    budget_info: "N/A",
+                  },
+                  evening: details.evening ?? {
+                    restaurant: "No restaurant planned",
+                    nightlife: "N/A",
+                  },
+                  transport:
+                    typeof details.transport === "string"
+                      ? { mode: details.transport, estimated_fare: "N/A" }
+                      : details.transport || {
+                          mode: "Unknown",
+                          estimated_fare: "N/A",
+                        },
+
+                  estimated_budget_breakdown: {
+                    total: Number(details.estimated_budget_breakdown) || 0,
+                  },
+                },
+              ]
+            )
+          ),
+        };
+
+        setItinerary(transformedItinerary);
         console.log(useItineraryStore.getState().itinerary);
-        router.push("/itinerary", { scroll: false });
-        //localStorage.setItem("itinerary", JSON.stringify(result.responseJson));
-        //router.push("/itinerary", { scroll: false });
-        // Navigate and pass data using state
         router.push("/itinerary", { scroll: false });
       } else {
         throw new Error(result.error || "Failed to generate itinerary");
@@ -86,15 +119,7 @@ const FlightSearch: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 to-black text-white p-8 flex flex-col items-center">
       {/* Hero Section */}
-      <div className="text-center max-w-3xl">
-        <h1 className="text-6xl font-extrabold mb-4">
-          AI-Powered Travel Companion
-        </h1>
-        <p className="text-lg text-gray-300 mb-6">
-          Plan your trips effortlessly with AI. Get curated itineraries with
-          flights, hotels, and places to visit—all in one place.
-        </p>
-      </div>
+      <Hero />
 
       {/* Search Form */}
       <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-4xl mt-10">
@@ -158,24 +183,6 @@ const FlightSearch: React.FC = () => {
           />
         </div>
 
-        {/* Checkbox Options */}
-        <div className="flex items-center gap-4 mb-4">
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              onChange={(e) => handleInput("direct", e.target.checked)}
-            />
-            Direct Flights Only
-          </label>
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              onChange={(e) => handleInput("nearby", e.target.checked)}
-            />
-            Add Nearby Airports
-          </label>
-        </div>
-
         {/* Search Button */}
         <button
           className="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50"
@@ -187,47 +194,10 @@ const FlightSearch: React.FC = () => {
       </div>
 
       {/* Features Section */}
-      <div className="mt-16 text-center max-w-4xl">
-        <h2 className="text-4xl font-semibold mb-6">Why Choose Us?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 bg-gray-800 rounded-lg shadow-lg">
-            <h3 className="font-bold text-lg">AI-Curated Itineraries</h3>
-            <p className="text-gray-300">
-              Personalized recommendations based on your interests.
-            </p>
-          </div>
-          <div className="p-6 bg-gray-800 rounded-lg shadow-lg">
-            <h3 className="font-bold text-lg">Real-Time Pricing</h3>
-            <p className="text-gray-300">
-              Get updated flight, hotel, and transport costs instantly.
-            </p>
-          </div>
-          <div className="p-6 bg-gray-800 rounded-lg shadow-lg">
-            <h3 className="font-bold text-lg">Seamless Booking</h3>
-            <p className="text-gray-300">
-              Book everything in one place with a few clicks.
-            </p>
-          </div>
-          <div className="p-6 bg-gray-800 rounded-lg shadow-lg">
-            <h3 className="font-bold text-lg">Customer Support</h3>
-            <p className="text-gray-300">
-              {`24/7 assistance for all your travel needs.`}
-            </p>
-          </div>
-        </div>
-      </div>
+      <Feature />
 
       {/* Testimonials */}
-      <div className="mt-16 text-center max-w-3xl">
-        <h2 className="text-4xl font-semibold mb-6">What Our Users Say</h2>
-        <p className="text-gray-300 italic">
-          "This AI planner saved me hours of research! Everything I needed in
-          one click." – Rahul S.
-        </p>
-        <p className="text-gray-300 italic">
-          "I love how it finds the best deals instantly!" – Priya M.
-        </p>
-      </div>
+      <Testimonial />
     </div>
   );
 };
