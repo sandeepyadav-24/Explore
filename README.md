@@ -72,6 +72,7 @@ Explr is a powerful and intelligent travel planning platform that helps users cr
   - Express: Simplifies route handling and API creation.
    - JWT (JSON Web Token): Secure authentication and session management with tokens.
     - bcrypt: Hashes passwords for secure storage and protection.
+     - Hono: For serverless Integration adn deploymnet 
 
 **Database:**
  - PostgrSQL: SQL database for flexible, scalable data storage.
